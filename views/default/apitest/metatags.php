@@ -8,6 +8,7 @@
 	 * @copyright Curverider Ltd 2008
 	 * @link http://elgg.com/
 	 */
+
 ?>
 <script type="text/javascript" language="javascript">
 <!--
@@ -22,13 +23,3 @@ function showhide(oid)
 }
 // -->
 </script>
-
-<div id="config">
-		<?php echo $vars['config']; ?>
-</div>
-
-<hr />
-
-<div id="list">
-	<?php echo $vars['commandlist']; ?>
-</div>

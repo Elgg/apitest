@@ -9,71 +9,39 @@
 	 * @link http://elgg.com/
 	 */
 
-	require_once("../../engine/start.php");
-	
-	global $CONFIG, $API_CLIENT;
-	
-	
-	// Get some variables
-	$apikey = get_input("apikey");
-	$secret = get_input("secret");
-	$endpoint = get_input("endpoint");
-	
-	
-	if ($_REQUEST['action'] == "configure")
-   		apitest_configure($apikey, $secret, $endpoint);
-   		
-	// Get a list of commands
-	if ($API_CLIENT->configured == true)
-	{
-		$commands = apitest_call(
-	                array (
-	                        'method' => 'system.api.list'
-	                )
-	    );
-	    $commands = $commands->result;
-	}
+	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
-	/* See if we are executing a method - This is a quick demo, obviously use functions as they are much easier!*/
-	if (isset($_REQUEST['method']))
-	{
+	admin_gatekeeper();
+	set_context('admin');
 	
-		$command_details = $commands[$_REQUEST['method']];
-		$auth_req = $command_details['require_auth'] == 1 ? true : false;
-		
-		$params = array();
-		$params['method'] = $_REQUEST['method'];
-		if ($auth_req) 
-			$params['auth_token'] = $_REQUEST['auth_token'];
-		
-		foreach ($command_details['parameters'] as $k => $v)
+	// Set admin user for user block
+	set_page_owner($_SESSION['guid']);
+	
+	
+	$title = elgg_view_title(elgg_echo('apitest'));
+	
+	
+	// fetch api list
+	$apikey = get_plugin_setting('apikey', 'apitest');
+	$secret = get_plugin_setting('secretkey', 'apitest');
+	$endpoint = get_plugin_setting('endpoint', 'apitest');
+	
+	if ( ($apikey) && ($secret) && ($endpoint) )
+	{
+		$commands = send_api_get_call($endpoint, array ('method' => 'system.api.list'), array ('public' => $apikey, 'private' => $secret));
+	
+		foreach ($commands->result as $command => $details)
 		{
-			$params[$k] = $_REQUEST[$k];
+			// List commands here.
+			$body .= elgg_view('apitest/command', array('command' => $command, 'details' => $details));
+			
 		}
 		
-		$result = apitest_call($params, $_REQUEST['post_data']);
-		
-		
-		if ($result->status == 0)
-			system_message("<div id=\"result\"><pre>".print_r($result->result, true)."</pre></div>");
-		else 
-			register_error($result->message);
-					
-		if (!is_object($result)) echo $LAST_CALL_RAW;
-		
-		
-		
 	}
-
-	// Draw command form
-	$list = "";
-	foreach ($commands as $command => $details)
-		$list .= apitest_draw_command_form($command, $details);
+	else
+		$body .= elgg_echo('apitest:notconfigured');
 		
-	$body = elgg_view_layout("one_column", elgg_view("apitest/main", array(
-		"config" => apitest_draw_config_panel(),
-		"commandlist" => $list
-	)));
+	// Display main admin menu
+	page_draw(elgg_echo('apitest'),elgg_view_layout("two_column_left_sidebar", '', $title . $body));
 	
-	page_draw("API Commands",$body);
 ?>
