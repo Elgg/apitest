@@ -10,7 +10,7 @@
 	 */
 
 	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
-
+	
 	admin_gatekeeper();
 	set_context('admin');
 	
@@ -21,19 +21,24 @@
 	$title = elgg_view_title(elgg_echo('apitest:lastresult'));
 	
 	$errormessage = "";
-	if ($_SESSION['apitest:result']->result!=0)
+	if (!$_SESSION['apitest:result'])
+		$errormessage = "<div><p><b>{$_SESSION['apitest:rawresult']}</b></p></div>";
+	else if ($_SESSION['apitest:result']->result!=0)
 		$errormessage = "<div><p><b>{$_SESSION['apitest:result']->message}</b></p><hr /></div>";
 	
 	$body .= $errormessage;
 
-	foreach ((array)$_SESSION['apitest:result'] as $k => $v)
+	if ($_SESSION['apitest:result'])
 	{
-		if (!is_array($v))
-			$body .= "<div><p><b>$k: </b> $v</p></div>";
-		else
+		foreach ((array)$_SESSION['apitest:result'] as $k => $v)
 		{
-			foreach ($v as $p => $q)
-				$body .= "<div><p><b>+ $p: </b> $q</p></div>";
+			if (!is_array($v))
+				$body .= "<div><p><b>$k: </b> $v</p></div>";
+			else
+			{
+				foreach ($v as $p => $q)
+					$body .= "<div><p><b>+ $p: </b> $q</p></div>";
+			}
 		}
 	}
 		

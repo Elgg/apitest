@@ -9,7 +9,7 @@
 	 * @link http://elgg.com/
 	 */
 
-	global $CONFIG;
+	global $CONFIG, $APICLIENT_LAST_CALL_RAW;
 
 	action_gatekeeper();
 	admin_gatekeeper();
@@ -36,15 +36,18 @@
 			$params['method'] = $method;
 		
 			// Needs auth token?
-			if ($command_details['require_auth'])
+			if ($command_details['require_auth_token'])
+			{
 				$params['auth_token'] = get_input('auth_token');
+				$_SESSION["apitest:auth_token"] = $params['auth_token']; // Set session for next query
+			}
 		
 			// Get other expected parameters
 			foreach ($command_details['parameters'] as $k => $v) {
 				$params[$k] = get_input($k);
 				$_SESSION["apitest:$k"] = $params[$k]; // Set session for next query
 			}
-			
+		
 			// Execute
 			$result = "";
 			if ($command_details['call_method'] == 'POST')
@@ -53,6 +56,8 @@
 				$result = send_api_get_call($endpoint, $params, array ('public' => $apikey, 'private' => $secret));
 		
 			// Process results
+			$_SESSION['apitest:rawresult'] = $APICLIENT_LAST_CALL_RAW;
+			
 			$_SESSION['apitest:result'] = $result;
 			if (($result) && ($result->status == 0))
 			{

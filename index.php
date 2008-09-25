@@ -29,14 +29,18 @@
 	if ( ($apikey) && ($secret) && ($endpoint) )
 	{
 		$commands = send_api_get_call($endpoint, array ('method' => 'system.api.list'), array ('public' => $apikey, 'private' => $secret));
-	
-		foreach ($commands->result as $command => $details)
-		{
-			// List commands here.
-			$body .= elgg_view('apitest/command', array('command' => $command, 'details' => $details));
-			
-		}
 		
+		if ($commands)
+		{
+			foreach ($commands->result as $command => $details)
+			{
+				// List commands here.
+				$body .= elgg_view('apitest/command', array('command' => $command, 'details' => $details));
+				
+			}
+		}
+		else
+			$body .= elgg_echo('apitest:notconfigured');
 	}
 	else
 		$body .= elgg_echo('apitest:notconfigured');
