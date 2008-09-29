@@ -30,7 +30,7 @@
 			if ((is_array($v)) || (is_object($v)))
 				$body .= display_var($v, $n+1);
 			else
-				$body .= "<div><p><b>$k: </b> $v</p></div>";
+				$body .= "<div><p>$depthadd <b>$k: </b> $v</p></div>";
 		}
 		
 		return $body;
