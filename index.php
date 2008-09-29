@@ -30,7 +30,7 @@
 	{
 		$commands = send_api_get_call($endpoint, array ('method' => 'system.api.list'), array ('public' => $apikey, 'private' => $secret));
 		
-		if ($commands)
+		if (($commands) && ($commands->status == 0))
 		{
 			foreach ($commands->result as $command => $details)
 			{
