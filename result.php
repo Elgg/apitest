@@ -27,8 +27,8 @@
 
 		foreach ($var as $k => $v)
 		{
-			if ((is_array($var)) || (is_object($var)))
-				$body .= display_var($var);
+			if ((is_array($v)) || (is_object($v)))
+				$body .= display_var($var, $n+1);
 			else
 				$body .= "<div><p><b>$k: </b> $v</p></div>";
 		}
