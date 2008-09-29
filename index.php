@@ -42,7 +42,7 @@
 				}
 			}
 			else
-				$body .= $commands->status;
+				$body .= $commands->message;
 		}
 		else
 			$body .= elgg_echo('apitest:notconfigured');
