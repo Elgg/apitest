@@ -18,6 +18,24 @@
 	set_page_owner($_SESSION['guid']);
 	
 	
+	function display_var($var, $n = 0)
+	{
+		$body = "";
+		$depthadd = "";
+		for ($a =0; $a < $n; $a ++)
+			$depthadd .= "+";
+
+		foreach ($var as $k => $v)
+		{
+			if ((is_array($var)) || (is_object($var)))
+				$body .= display_var($var);
+			else
+				$body .= "<div><p><b>$k: </b> $v</p></div>";
+		}
+		
+		return $body;
+	}
+	
 	$title = elgg_view_title(elgg_echo('apitest:lastresult'));
 	
 	$errormessage = "";
@@ -30,8 +48,11 @@
 
 	if ($_SESSION['apitest:result'])
 	{
-		foreach ((array)$_SESSION['apitest:result'] as $k => $v)
+		$body .= display_var($_SESSION['apitest:result']);
+		
+		/*foreach ((array)$_SESSION['apitest:result'] as $k => $v)
 		{
+			
 			if (!is_array($v))
 				$body .= "<div><p><b>$k: </b> $v</p></div>";
 			else
@@ -39,7 +60,7 @@
 				foreach ($v as $p => $q)
 					$body .= "<div><p><b>+ $p: </b> $q</p></div>";
 			}
-		}
+		}*/
 	}
 		
 	// Display main admin menu
