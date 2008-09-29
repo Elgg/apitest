@@ -27,10 +27,15 @@
 
 		foreach ($var as $k => $v)
 		{
-			if ((is_array($v)) || (is_object($v)))
+			if (is_object($v))
 				$body .= display_var($v, $n+1);
+			else if (is_array($v))
+			{
+				foreach ($v as $p => $q)
+					$body .= "<div><p><b>$depthadd $p: </b> $q</p></div>";
+			}				
 			else
-				$body .= "<div><p>$depthadd <b>$k: </b> $v</p></div>";
+				$body .= "<div><p><b>$depthadd $k: </b> $v</p></div>";
 		}
 		
 		return $body;
