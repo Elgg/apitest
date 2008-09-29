@@ -53,6 +53,7 @@
 
 	if ($_SESSION['apitest:result'])
 	{
+		$body .= "<div><p>Result</p></div>";
 		$body .= display_var($_SESSION['apitest:result']);
 		
 		/*foreach ((array)$_SESSION['apitest:result'] as $k => $v)
