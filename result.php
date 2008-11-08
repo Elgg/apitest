@@ -32,7 +32,7 @@
 			else if (is_array($v))
 			{
 				foreach ($v as $p => $q)
-					$body .= "<div><p><b>$depthadd $p: </b> $q</p></div>";
+					$body .= "<div><p><b>$depthadd $p: </b> ".display_var($q, $n+1)."</p></div>";
 			}				
 			else
 				$body .= "<div><p><b>$depthadd $k: </b> $v</p></div>";
