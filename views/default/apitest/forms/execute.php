@@ -54,5 +54,5 @@
 		</div>
 END;
 	
-	echo elgg_view('input/form', array('action' => "{$vars['url']}actions/apitest/execute", 'body' => $form_data));
+	echo elgg_view('input/form', array('action' => "{$vars['url']}action/apitest/execute", 'body' => $form_data));
 ?>
