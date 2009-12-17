@@ -17,7 +17,7 @@
 		register_page_handler('apitest','apitest_page_handler');
 		
 		// Metatags
-		extend_view('metatags','apitest/metatags');
+		elgg_extend_view('metatags','apitest/metatags');
 		
 		// Register some actions
 		register_action("apitest/execute",false, $CONFIG->pluginspath . "apitest/actions/execute.php", true);
