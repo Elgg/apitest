@@ -11,7 +11,7 @@
 
 	$endpoint = $vars['entity']->endpoint;
 	if (!$endpoint)
-		$endpoint = "{$vars['url']}pg/api/rest/php/";
+		$endpoint = "{$vars['url']}services/api/rest/php/";
 ?>
 <p>
 	<?php echo elgg_echo('apitest:apikey'); ?> <?php echo elgg_view('input/text', array('internalname' => 'params[apikey]', 'value' => $vars['entity']->apikey)); ?>

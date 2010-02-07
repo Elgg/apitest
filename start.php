@@ -9,6 +9,22 @@
 	 * @link http://elgg.com/
 	 */
 
+	/**
+	 * Hello, world
+	 */
+	expose_function('hello', 
+					'cooler_hello_world', 
+					array( 'string' => array('type' => 'string') ), 
+					"hello world test",
+					"GET",
+					true,
+					true );
+					
+	function cooler_hello_world($string)
+	{
+		return $string;
+	}
+
 	function apitest_init($event, $object_type, $object = null) {
 		
 		global $CONFIG;

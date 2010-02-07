@@ -15,7 +15,7 @@
 	set_context('admin');
 	
 	// Set admin user for user block
-	set_page_owner($_SESSION['guid']);
+	set_page_owner(get_loggedin_userid());
 	
 	
 	function display_var($var, $n = 0)
@@ -34,8 +34,10 @@
 				foreach ($v as $p => $q)
 					$body .= "<div><p><b>$depthadd $p: </b> ".display_var($q, $n+1)."</p></div>";
 			}				
-			else
-				$body .= "<div><p><b>$depthadd $k: </b> $v</p></div>";
+			else {
+				$var = print_r($v, true);
+				$body .= "<div><p><b>$depthadd $k: $var</b> </p></div>";
+			}
 		}
 		
 		return $body;
@@ -43,32 +45,16 @@
 	
 	$title = elgg_view_title(elgg_echo('apitest:lastresult'));
 	
-	$errormessage = "";
-	if (!$_SESSION['apitest:result'])
-		$errormessage = "<div><p><b>{$_SESSION['apitest:rawresult']}</b></p></div>";
-	else if ($_SESSION['apitest:result']->result!=0)
-		$errormessage = "<div><p><b>{$_SESSION['apitest:result']->message}</b></p><hr /></div>";
+	$body = '<div class="contentWrapper">';
 	
-	$body .= $errormessage;
-
-	if ($_SESSION['apitest:result'])
-	{
-		$body .= display_var($_SESSION['apitest:result']);
-		
-		/*foreach ((array)$_SESSION['apitest:result'] as $k => $v)
-		{
-			
-			if (!is_array($v))
-				$body .= "<div><p><b>$k: </b> $v</p></div>";
-			else
-			{
-				foreach ($v as $p => $q)
-					$body .= "<div><p><b>+ $p: </b> $q</p></div>";
-			}
-		}*/
+	$body .= '<h3>' . elgg_echo('apitest:method') . ": {$_SESSION['apitest:method']}</h3><br />";
+	
+	if ($_SESSION['apitest:result']) {
+		$body .= display_var($_SESSION['apitest:result']);		
 	}
+	
+	$body .= '</div>';
 		
-	// Display main admin menu
 	page_draw(elgg_echo('apitest:lastresult'),elgg_view_layout("two_column_left_sidebar", '', $title . $body));
 	
 

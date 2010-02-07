@@ -9,25 +9,16 @@
 	 * @link http://elgg.com/
 	 */
 	
-	global $CONFIG;
+	$title = $vars['command'];
 	
-	$entity = new ElggObject();
-	$entity->subtype = 'api_command';
-	$entity->title = $vars['command'];
-	
-	$icon = elgg_view(
-			'graphics/icon', array(
-			'entity' => $entity,
-			'size' => 'small',
-		  )
-		);
-		
 	$details = $vars['details'];
 
-	$info .= "<p><b><a href=\"#\" onClick=\"showhide('{$entity->title}');\">{$entity->title}</a></b>"; 
-	if ($details['description']) $info .= " - {$details['description']}</p>";
+	$info .= "<p><b><a href=\"#\" onclick=\"showhide('{$title}');\">{$title}</a></b>"; 
+	if ($details['description']) {
+		$info .= " - {$details['description']}</p>";
+	}
 	
-	$info .= "<div id=\"{$entity->title}\" style=\"display: none\">".elgg_view('apitest/forms/execute', $vars)."</div>";
+	$info .= "<div id=\"{$title}\" style=\"display: none\">".elgg_view('apitest/forms/execute', $vars)."</div>";
 
-	echo elgg_view_listing($icon, $info);
+	echo elgg_view_listing(NULL, $info);
 ?>

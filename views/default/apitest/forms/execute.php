@@ -15,31 +15,31 @@
 	
 	$params = array();
 
-	// If authentication is required then ensure this is prompted for
-	if ($details['require_auth_token'] == true)
-		$params['auth_token'] = $_SESSION['apitest:auth_token'];
-		
-	// Compile a list of parameters
-	foreach ($details['parameters'] as $k => $v)
-		$params[$k] = $_SESSION["apitest:$k"];
-		
 	$variables = "";
-	foreach ($params as $k => $v)
-	{
+	
+	// If authentication is required then ensure this is prompted for
+	if ($details['require_user_auth'] == true) {
+		$variables .= "<p><b>auth_token</b> :";
+		$variables .= elgg_view('input/text', array('internalname' => 'auth_token', 'value' => ''));			
+	}
+			
+	foreach ($details['parameters'] as $k => $v) {
 		$variables .= "<p><b>$k</b> ";
 		
-		if (isset($details['parameters'][$k]['required']) && ($details['parameters'][$k]['required']!=0))
+		if ($details['parameters'][$k]['required'] == FALSE) {
 			$variables .= " (".elgg_echo('apitest:optional'). ") :";
-		else
+		} else {
 			$variables .= ":";
+		}
 		
 		$variables .= elgg_view('input/text', array('internalname' => $k, 'value' => $v));			
 	}
 		
 	// Do we need to provide post data?
 	$postdata = "";
-	if ($details['call_method'] == 'POST')
-		$postdata = "<span onClick=\"showhide('$command:postdata')\"><a href=\"#\">". elgg_echo('apitest:postdata') . "</a></span>";
+	if ($details['call_method'] == 'POST') {
+		$postdata = "<span onclick=\"showhide('$command:postdata')\"><a href=\"#\">". elgg_echo('apitest:postdata') . "</a></span>";
+	}
 	
 	$method_control = elgg_view('input/hidden', array('internalname' => 'method', 'value' => $command));
 	$postdata_control = elgg_view('input/longtext', array('internalname' => 'post_data'));

@@ -22,9 +22,9 @@
 			'apitest:apikey' => 'API Key',
 			'apitest:secretkey' => 'Secret Key',
 			'apitest:endpoint' => 'Endpoint',
+			'apitest:method' => 'Method',
 	
-	
-			'apitest:notconfigured' => 'The API Tester has not yet been configured, please go to the Admin -> tools settings for this plugin.',
+			'apitest:notconfigured' => 'The API Tester has not yet been configured. Please go to the Tools Administration page and configure it.',
 	
 			'apitest:optional' => "Optional",
 			'apitest:postdata' => "Add POST data to query...",
